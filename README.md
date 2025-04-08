@@ -98,11 +98,9 @@ Resposta esperada:
   }
 ]}
 ```
-  
 
-
-### Test Methods:
-1. **Usando curl** (direto no terminal ou pode ser imporetado no Postman):
+### Testando o endpoint:
+1. **Usando curl** (direto no terminal ou pode ser importado no Postman):
 ```bash
     curl -X 'GET' \
       'http://localhost:8000/api/v1/producers/intervals' \
