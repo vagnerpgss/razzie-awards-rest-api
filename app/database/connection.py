@@ -20,6 +20,20 @@ class DatabaseManager:
         self.conn = None
         self._initialized = True
 
+    def __enter__(self):
+        self.connect()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
+
+    def close(self):
+        if self.conn:
+            self.conn.close()
+            self.conn = None
+
     def connect(self):
         if not self.conn:
             self.conn = duckdb.connect(database=self.db_path)
@@ -46,6 +60,10 @@ class DatabaseManager:
         """)
 
     def _load_initial_data(self):
+        csv_file = Path(self.csv_path)
+        if not csv_file.exists():
+            raise FileNotFoundError(f"Movie Awards DB: CSV file not found at '{csv_file}'")
+
         df = pd.read_csv(self.csv_path, sep=';')
         df['winner'] = df['winner'].fillna('').apply(lambda x: x.strip().lower() == 'yes')
 

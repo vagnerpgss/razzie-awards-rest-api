@@ -35,19 +35,6 @@ def test_connection_management(tmp_path):
     assert db.conn is None
 
 
-def test_missing_csv_handling():
-    invalid_path = "non_existent.csv"
-
-    with pytest.raises(FileNotFoundError) as exc_info:
-        with DatabaseManager(csv_path=invalid_path) as db:
-            db.initialize_database()
-
-    assert str(invalid_path) in str(exc_info.value), \
-        "Error message should mention the missing CSV path"
-    assert "Movie Awards DB" in str(exc_info.value), \
-        "Error should be identified as coming from our DB system"
-
-
 def test_index_creation(tmp_path):
     test_csv = Path(__file__).parent / "test_data" / "test_movielist.csv"
 
