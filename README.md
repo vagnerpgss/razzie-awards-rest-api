@@ -2,7 +2,7 @@
 
 Implementação de uma API RESTful para possibilitar a leitura da lista de indicados e vencedores da categoria Pior Filme do Golden Raspberry Awards
 
-## Requerimentos
+## Requisitos
 
 * [Python 3.13.2](https://www.python.org/downloads/)
 * [Pip](https://pypi.org/project/pip/) Para instalação das dependências (requirements.txt)
