@@ -6,7 +6,7 @@ import duckdb
 
 router = APIRouter()
 
-@router.get("/intervals", response_model=ProducerIntervalResponse)
+@router.get("/producers/intervals", response_model=ProducerIntervalResponse)
 def get_producers_with_intervals(db: duckdb.DuckDBPyConnection = Depends(get_connection_db)):
     response = calculate_producer_intervals(db)
     if not response.min and not response.max:
