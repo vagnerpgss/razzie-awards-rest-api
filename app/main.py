@@ -1,22 +1,14 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from pathlib import Path
 from app.database.connection import DatabaseManager
+from app.routers import producers
 
+_db_manager = DatabaseManager()
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    db_path = Path(":memory:")
-    csv_path = Path(__file__).parent.parent / "data" / "Movielist.csv"
-
-    with DatabaseManager(
-        db_path=str(db_path),
-        csv_path=str(csv_path)
-    ) as db:
-        db.initialize_database()
-
+    _db_manager.initialize_database()
     yield
-
 
 app = FastAPI(
     title="Razzie Awards API",
@@ -24,6 +16,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan
 )
+
+app.include_router(producers.router, prefix="/api/v1", tags=["producers"])
 
 @app.get("/")
 async def root():
