@@ -4,10 +4,7 @@ from app.services.producer_service import calculate_producer_intervals
 from app.schemas.producers import ProducerIntervalResponse
 import duckdb
 
-router = APIRouter(
-    prefix="/producers",
-    tags=["Producers"]
-)
+router = APIRouter()
 
 @router.get("/intervals", response_model=ProducerIntervalResponse)
 def get_producers_with_intervals(db: duckdb.DuckDBPyConnection = Depends(get_connection_db)):
