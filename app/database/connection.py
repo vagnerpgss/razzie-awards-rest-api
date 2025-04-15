@@ -64,7 +64,7 @@ class DatabaseManager:
         if not csv_file.exists():
             raise FileNotFoundError(f"Movie Awards DB: CSV file not found at '{csv_file}'")
 
-        df = pd.read_csv(self.csv_path, sep=';')
+        df = pd.read_csv(self.csv_path, sep=';', engine='python')
         df['winner'] = df['winner'].fillna('').apply(lambda x: x.strip().lower() == 'yes')
 
         self.conn.execute("DELETE FROM worst_movie_nominations;")

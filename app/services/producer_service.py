@@ -1,6 +1,7 @@
 from collections import defaultdict
 from typing import List
 import duckdb
+import re
 from app.schemas.producers import ProducerInterval, ProducerIntervalResponse
 
 def calculate_producer_intervals(db: duckdb.DuckDBPyConnection) -> ProducerIntervalResponse:
@@ -14,9 +15,10 @@ def calculate_producer_intervals(db: duckdb.DuckDBPyConnection) -> ProducerInter
     producer_years = defaultdict(list)
 
     for year, producers_str in result:
-        producers = [p.strip() for p in producers_str.split(',') if p.strip()]
+        # Split by comma or ' and ', ignoring surrounding spaces
+        producers = [p.strip() for p in re.split(r',|\s+and\s+', producers_str) if p.strip()]
         for producer in producers:
-            producer_years[producer].append(year)
+            producer_years[producer].append(int(year))
 
     intervals: List[ProducerInterval] = []
 
