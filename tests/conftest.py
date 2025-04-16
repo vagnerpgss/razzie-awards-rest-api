@@ -1,6 +1,7 @@
 import pytest
 from pathlib import Path
 from app.database.connection import DatabaseManager
+import duckdb
 
 
 @pytest.fixture
@@ -13,3 +14,12 @@ def test_db(tmp_path):
     ) as db:
         db.initialize_database()
         yield db
+
+@pytest.fixture(autouse=True)
+def clean_duckdb_state():
+    """
+    Fixture to ensure DuckDB connections are reset before each test.
+    This helps avoid cross-test contamination when using :memory: DBs or default sessions.
+    """
+    yield
+    duckdb.close()
